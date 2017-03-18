@@ -10,12 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.team007.voicecomp.MainPage">
 
-    <Button
-        android:id="@+id/goToRecAct"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Button"
-        android:onlick="goToRecordActivity"/>
+        android:text="Hello World!" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="119dp"
+        android:onClick="startTest"/>
 </RelativeLayout>

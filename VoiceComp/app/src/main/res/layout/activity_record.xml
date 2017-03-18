@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,31 +15,19 @@
         tools:layout_editor_absoluteY="33dp" />
 
     <Button
-        android:id="@+id/recButton1"
+        android:id="@+id/calculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="rec1"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="119dp"
-        android:onClick="recordVoice"/>
-
-    <Button
-        android:id="@+id/recButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rec2"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="241dp"
-        android:onClick="recordVoice"/>
-
-    <Button
-        android:id="@+id/play1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="play1"
-        tools:layout_editor_absoluteX="180dp"
-        tools:layout_editor_absoluteY="119dp"
-        android:onClick="playRecording"/>
+        android:text="calculate"
+        tools:layout_editor_absoluteX="98dp"
+        tools:layout_editor_absoluteY="381dp"
+        android:onClick="calculate"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/sentenceToSay"
+        android:layout_toEndOf="@+id/sentenceToSay"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginBottom="137dp" />
 
     <Button
         android:id="@+id/play2"
@@ -48,32 +36,48 @@
         android:text="play2"
         tools:layout_editor_absoluteX="189dp"
         tools:layout_editor_absoluteY="241dp"
-        android:onClick="playRecording"/>
+        android:layout_above="@+id/calculate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="65dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="67dp" />
 
     <Button
-        android:id="@+id/recordAgain1"
+        android:id="@+id/recButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="replay"
-        tools:layout_editor_absoluteX="268dp"
+        android:text="rec2"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="241dp"
+        android:layout_alignBaseline="@+id/play2"
+        android:layout_alignBottom="@+id/play2"
+        android:layout_toLeftOf="@+id/play2"
+        android:layout_toStartOf="@+id/play2"
+        android:layout_marginRight="67dp"
+        android:layout_marginEnd="67dp" />
+
+    <Button
+        android:id="@+id/recButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rec1"
+        tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="119dp"
-        android:onClick="recordAgain"/>
+        android:layout_below="@+id/sentenceToSay"
+        android:layout_alignLeft="@+id/recButton2"
+        android:layout_alignStart="@+id/recButton2"
+        android:layout_marginTop="55dp" />
 
     <Button
-        android:id="@+id/recordAgain2"
+        android:id="@+id/play1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="replay"
-        tools:layout_editor_absoluteX="289dp"
-        tools:layout_editor_absoluteY="231dp"
-        android:onClick="recordAgain"/>
-
-    <Button
-        android:id="@+id/calculate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="calculate"
-        tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="381dp"
-        android:onClick="calculate"/>
-</android.support.constraint.ConstraintLayout>
+        android:text="play1"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="119dp"
+        android:layout_marginTop="11dp"
+        android:layout_alignTop="@+id/recButton1"
+        android:layout_alignLeft="@+id/play2"
+        android:layout_alignStart="@+id/play2" />
+</RelativeLayout>

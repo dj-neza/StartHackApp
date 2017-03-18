@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 public class MainPage extends AppCompatActivity {
 
@@ -11,9 +12,10 @@ public class MainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
     }
 
-    public void goToRecordActivity(View view) {
+    public void startTest(View view) {
         Intent intent = new Intent(this, RecordActivity.class);
         startActivity(intent);
     }
