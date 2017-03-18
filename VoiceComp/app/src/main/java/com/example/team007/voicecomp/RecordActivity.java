@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ public class RecordActivity extends Activity {
     String audio_name2 = "";
     MediaRecorder mediaRecorder;
     Random random;
+    String RandomAudioFileName = "ABCDEFGHIJKLMNOPRSTUVZYQ1234567890";
     public static final int RequestPermissionCode = 1;
     MediaPlayer mediaPlayer ;
     DatabaseHelper db = null;
@@ -53,8 +56,7 @@ public class RecordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        // prepare folder for saving recordings
-        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+
 
         db = new DatabaseHelper(this);
 
@@ -105,15 +107,21 @@ public class RecordActivity extends Activity {
 
                     if (checkPermission()) {
 
-                        audio_name = AudioSavePathInDevice + getCurrentTimeStamp() + "_AudioRecording.3gp";
+                        // prepare folder for saving recordings
+                        AudioSavePathInDevice =
+                                Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5)  + "AudioRecording.3gp";
+
+                       // AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+
+                        //audio_name = AudioSavePathInDevice  + "_AudioRecording.3gp";
 
                         if (mediaPlayer != null) {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady(audio_name);
+                        MediaRecorderReady();
                         int id1 = random.nextInt(1000000);
-                        db.addRecording(id1, audio_name);
+                        db.addRecording(id1, AudioSavePathInDevice);
 
                         try {
                             mediaRecorder.prepare();
@@ -147,12 +155,13 @@ public class RecordActivity extends Activity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(audio_name);
+                    mediaPlayer.setDataSource(AudioSavePathInDevice);
+                    Log.d("ERROR", audio_name+" asjauerijkgioajgieu");
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                //Log.d("ERROR", "mjav mjav mjacv");
                 mediaPlayer.start();
                 Toast.makeText(RecordActivity.this, "Recording Playing", Toast.LENGTH_LONG).show();
             }
@@ -166,15 +175,18 @@ public class RecordActivity extends Activity {
                     buttonStart2.setSelected(true);
                     if (checkPermission()) {
 
-                        audio_name2 = AudioSavePathInDevice + getCurrentTimeStamp() + "_AudioRecording.3gp";
+                        //audio_name2 = AudioSavePathInDevice + getCurrentTimeStamp() + "_AudioRecording.3gp";
+
+                        AudioSavePathInDevice =
+                                Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5)  + "AudioRecording.3gp";
 
                         if (mediaPlayer != null) {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady(audio_name2);
+                        MediaRecorderReady();
                         int id2 = random.nextInt(1000000);
-                        db.addRecording(id2, audio_name2);
+                        db.addRecording(id2, AudioSavePathInDevice);
 
                         try {
                             mediaRecorder.prepare();
@@ -208,7 +220,7 @@ public class RecordActivity extends Activity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(audio_name2);
+                    mediaPlayer.setDataSource(AudioSavePathInDevice);
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -221,12 +233,12 @@ public class RecordActivity extends Activity {
 
     }
 
-    public void MediaRecorderReady(String audio_name){
+    public void MediaRecorderReady(){
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(audio_name);
+        mediaRecorder.setOutputFile(AudioSavePathInDevice);
     }
 
     public String getCurrentTimeStamp() {
@@ -299,7 +311,20 @@ public class RecordActivity extends Activity {
         String response = getResponse(perc);
         intent.putExtra("result", Integer.toString(perc));
         intent.putExtra("explanation", response);
+        Button b = (Button) findViewById(R.id.calculate);
+        b.setBackgroundColor(Color.parseColor("#D3D3D3"));
         startActivity(intent);
+    }
+
+    public String CreateRandomAudioFileName(int string){
+        StringBuilder stringBuilder = new StringBuilder( string );
+        int i = 0 ;
+        while(i < string ) {
+            stringBuilder.append(RandomAudioFileName.charAt(random.nextInt(RandomAudioFileName.length())));
+
+            i++ ;
+        }
+        return stringBuilder.toString();
     }
 
     public class MyAdapter extends ArrayAdapter<String> {
@@ -323,6 +348,12 @@ public class RecordActivity extends Activity {
         ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.female);
         left_icon.setImageResource(images[position]);
         return mySpinner;
+    }
+
+    public void goToMain(View view) {
+        Intent intent = new Intent(this, MainPage.class);
+        startActivity(intent);
+
     }
 
 }
