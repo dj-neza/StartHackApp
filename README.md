@@ -1,2 +1,0 @@
-# StartHackApp
-Voice compatibility app :)
