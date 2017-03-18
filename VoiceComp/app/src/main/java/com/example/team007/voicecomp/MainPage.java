@@ -48,9 +48,9 @@ public class MainPage extends Activity {
         db.addSentence(19, "Do you believe in magic?");
         db.addSentence(20, "We are the champions no matter what happens.");
         db.addSentence(21, "Why is it so hard to believe that somebody actually wants to be nice?");
-        */
 
-        /*
+
+
         db.addResponse(0, 0, "Ouch! That sounds really out of tune. The chemistry (if there ever was any) is gone and seems like you two might just be better off appart.");
         db.addResponse(1, 5, "Your love story is just like the sound of your voices - a perfect harmony! Nothing can break your connection because you are meant to be!");
         db.addResponse(2, 5, "You keep hitting all the high notes. Congratulations, even the karaoke machine applauds you.");
