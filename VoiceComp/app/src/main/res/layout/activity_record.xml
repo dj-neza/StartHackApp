@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.team007.voicecomp.RecordActivity">
+
+    <TextView
+        android:id="@+id/sentenceToSay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sentence to say"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <Button
+        android:id="@+id/recButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rec1"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="119dp"
+        android:onClick="recordVoice"/>
+
+    <Button
+        android:id="@+id/recButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rec2"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="241dp"
+        android:onClick="recordVoice"/>
+
+    <Button
+        android:id="@+id/play1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play1"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="119dp"
+        android:onClick="playRecording"/>
+
+    <Button
+        android:id="@+id/play2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play2"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="241dp"
+        android:onClick="playRecording"/>
+
+    <Button
+        android:id="@+id/recordAgain1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="replay"
+        tools:layout_editor_absoluteX="268dp"
+        tools:layout_editor_absoluteY="119dp"
+        android:onClick="recordAgain"/>
+
+    <Button
+        android:id="@+id/recordAgain2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="replay"
+        tools:layout_editor_absoluteX="289dp"
+        tools:layout_editor_absoluteY="231dp"
+        android:onClick="recordAgain"/>
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="calculate"
+        tools:layout_editor_absoluteX="98dp"
+        tools:layout_editor_absoluteY="381dp"
+        android:onClick="calculate"/>
+</android.support.constraint.ConstraintLayout>
