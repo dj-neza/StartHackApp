@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -260,6 +261,8 @@ public class RecordActivity extends Activity {
 
     public void calculate(View view) {
         Intent intent = new Intent(this, ResultsActivity.class);
+        Button b = (Button) findViewById(R.id.calculate);
+        b.setBackgroundColor(Color.parseColor("#D3D3D3"));
         startActivity(intent);
     }
 
@@ -284,6 +287,12 @@ public class RecordActivity extends Activity {
         ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.female);
         left_icon.setImageResource(images[position]);
         return mySpinner;
+    }
+
+    public void goToMain(View view) {
+        Intent intent = new Intent(this, MainPage.class);
+        startActivity(intent);
+
     }
 
 }

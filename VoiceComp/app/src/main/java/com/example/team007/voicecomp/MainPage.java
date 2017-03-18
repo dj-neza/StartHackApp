@@ -2,6 +2,7 @@ package com.example.team007.voicecomp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,29 +25,10 @@ public class MainPage extends Activity {
 
     public void startTest(View view) {
         Intent intent = new Intent(this, RecordActivity.class);
+        Button b = (Button) findViewById(R.id.mainpagetext);
+        b.setBackgroundColor(Color.parseColor("#D3D3D3"));
         startActivity(intent);
     }
-
-   /* public static void buttonEffect(View button){
-        button.setOnTouchListener(new OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        v.getBackground().clearColorFilter();
-                        v.invalidate();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
-    }*/
 
 
 }

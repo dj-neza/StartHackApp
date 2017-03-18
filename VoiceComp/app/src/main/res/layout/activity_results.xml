@@ -27,6 +27,7 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
+            android:onClick="goToMain"
             />
 
         <ImageView
