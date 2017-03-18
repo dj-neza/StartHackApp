@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VoiceComp</string>
+    <string name="mainPageText">Find your voice soulmate!</string>
+    <color name="white">#FFFFFF</color>
 </resources>
