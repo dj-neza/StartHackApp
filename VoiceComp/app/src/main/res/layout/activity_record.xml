@@ -57,17 +57,6 @@
         android:layout_marginRight="67dp"
         android:layout_marginEnd="67dp" />
 
-    <Button
-        android:id="@+id/recButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rec1"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="119dp"
-        android:layout_below="@+id/sentenceToSay"
-        android:layout_alignLeft="@+id/recButton2"
-        android:layout_alignStart="@+id/recButton2"
-        android:layout_marginTop="55dp" />
 
     <Button
         android:id="@+id/play1"
@@ -80,4 +69,16 @@
         android:layout_alignTop="@+id/recButton1"
         android:layout_alignLeft="@+id/play2"
         android:layout_alignStart="@+id/play2" />
+
+    <Button
+        android:id="@+id/recButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/rec"
+        android:text="rec1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginStart="48dp" />
 </RelativeLayout>

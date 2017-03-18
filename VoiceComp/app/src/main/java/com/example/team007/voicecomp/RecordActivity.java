@@ -49,8 +49,10 @@ public class RecordActivity extends AppCompatActivity {
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (buttonStart.getText().equals("rec1")) {
+
+                if (buttonStart.getText().equals("rec1") || buttonStart.getText().equals("rec1 again")) {
                     buttonStart.setText("stop rec1");
+                    buttonStart.setSelected(true);
                     if (checkPermission()) {
 
                         AudioSavePathInDevice =
@@ -79,7 +81,8 @@ public class RecordActivity extends AppCompatActivity {
                     }
                 }
                 else if (buttonStart.getText().equals("stop rec1")) {
-                    buttonStart.setText("rec1");
+                    buttonStart.setText("rec1 again");
+                    buttonStart.setSelected(false);
                     mediaRecorder.stop();
                     buttonPlay.setEnabled(true);
 
