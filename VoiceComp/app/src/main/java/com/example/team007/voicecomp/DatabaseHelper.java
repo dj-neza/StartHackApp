@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Recordings Table Columns
     private static final String RECORDING_ID = "id_recording";
-    //private static final String RECORDING_CONTENT = "content_sentence";
+    private static final String RECORDING_PATH = "recording_path";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,17 +62,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 RESPONSE_CONTENT + " VARCHAR" +
                 ")";
 
-        /*String CREATE_RECORDINGS_TABLE = "CREATE TABLE " + TABLE_RECORDINGS +
+        String CREATE_RECORDINGS_TABLE = "CREATE TABLE " + TABLE_RECORDINGS +
                 "(" +
                 RECORDING_ID + " INT PRIMARY KEY," +
-                RECORDING_CONTENT + " ___" +
-                ")";*/
+                RECORDING_PATH + " VARCHAR" +
+                ")";
 
         db.execSQL(CREATE_SENTENCES_TABLE);
         db.execSQL(CREATE_RESPONSES_TABLE);
-        //db.execSQL(CREATE_RECORDINGS_TABLE);
+        db.execSQL(CREATE_RECORDINGS_TABLE);
 
         //db.execSQL("INSERT INTO Sentences(id_sentence, content_sentence) VALUES (0, 'The sun is shining and so are you.');");
+    }
+
+    public void restart() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SENTENCES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESPONSES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORDINGS);
+        onCreate(db);
     }
 
     @Override
@@ -81,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_SENTENCES);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESPONSES);
-            //db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORDINGS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORDINGS);
             onCreate(db);
         }
     }
@@ -91,12 +99,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // 1) SENTENCES
 
     // Insert a sentence into the database
-    public void addSentence(String sentence) {
+    public void addSentence(int id, String sentence) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
+            values.put(SENTENCE_ID, id);
             values.put(SENTENCE_CONTENT, sentence);
 
             db.insertOrThrow(TABLE_SENTENCES, null, values);
@@ -151,12 +160,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // 2) RESPONSES
 
     // Insert a response into the database
-    public void addResponse(int percentage, String response) {
+    public void addResponse(int id, int percentage, String response) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
+            values.put(RESPONSE_ID, id);
             values.put(RESPONSE_CONTENT, response);
             values.put(RESPONSE_PERCENTAGE, percentage);
 
@@ -195,10 +205,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Get all responses of ceratin percentage from database
-    /*  0 : 0-24%
-        1 : 25-49%
-        2 : 50-74%
-        3 : 75-100%
+    /*  0 : 0-10%
+        1 : 11-30%
+        2 : 31-50%
+        3 : 51-70%
+        4 : 71-90%
+        5 : 91-100%
      */
     public ArrayList<String> getResponsesByPercentage(int percentage) {
         ArrayList<String> responses = new ArrayList<String>();
@@ -234,6 +246,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d("ERROR", "Error while trying to delete response from database");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    // 3) RECORDINGS
+
+    // Insert a recording into the database
+    public void addRecording(int id, String recording_path) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(RECORDING_ID, recording_path);
+            values.put(RECORDING_PATH, recording_path);
+
+            db.insertOrThrow(TABLE_RECORDINGS, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d("ERROR", "Error while trying to add recording to database");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    // Get all recordings from database
+    public ArrayList<String> getAllRecordings() {
+        ArrayList<String> recordings = new ArrayList<String>();
+
+        String RECORDINGS_SELECT_QUERY = "SELECT * FROM " + TABLE_RECORDINGS;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(RECORDINGS_SELECT_QUERY, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    String s = cursor.getString(cursor.getColumnIndex(RECORDING_PATH));
+                    recordings.add(s);
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d("ERROR", "Error while trying to get recordings from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return recordings;
+    }
+
+    // Delete a response from database by id
+    public void deleteRecording(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            db.execSQL("DELETE FROM " + TABLE_RECORDINGS + " WHERE " + RECORDING_ID + " = " + id);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d("ERROR", "Error while trying to delete recording from database");
         } finally {
             db.endTransaction();
         }

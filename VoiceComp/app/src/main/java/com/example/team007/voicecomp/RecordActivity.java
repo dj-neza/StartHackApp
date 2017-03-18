@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 import com.example.team007.voicecomp.ResultsActivity;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -26,9 +29,11 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class RecordActivity extends AppCompatActivity {
 
     Button buttonStart, buttonPlay, buttonStart2, buttonPlay2;
-    String AudioSavePathInDevice = null;
-    MediaRecorder mediaRecorder ;
-    Random random ;
+    String AudioSavePathInDevice = "";
+    String audio_name = "";
+    String audio_name2 = "";
+    MediaRecorder mediaRecorder;
+    Random random;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
     public static final int RequestPermissionCode = 1;
     MediaPlayer mediaPlayer ;
@@ -38,6 +43,9 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+        // prepare folder for saving recordings
+        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
 
         db = new DatabaseHelper(this);
 
@@ -54,7 +62,7 @@ public class RecordActivity extends AppCompatActivity {
         // get random sentence from database
         ArrayList<String> allSentences = db.getAllSentences();
         int numOfSentences = allSentences.size();
-        int randNum = random.nextInt(numOfSentences);
+        final int randNum = random.nextInt(numOfSentences);
         String randSent = allSentences.get(randNum);
 
         TextView generatedSentence = (TextView) findViewById(R.id.sentenceToSay);
@@ -67,23 +75,22 @@ public class RecordActivity extends AppCompatActivity {
                     buttonStart.setText("stop rec1");
                     if (checkPermission()) {
 
-                        AudioSavePathInDevice =
-                                Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5) + "AudioRecording.3gp";
+                        audio_name = AudioSavePathInDevice + getCurrentTimeStamp() + "_AudioRecording.3gp";
 
                         if (mediaPlayer != null) {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady();
+                        MediaRecorderReady(audio_name);
+                        int id1 = random.nextInt(1000000);
+                        db.addRecording(id1, audio_name);
 
                         try {
                             mediaRecorder.prepare();
                             mediaRecorder.start();
                         } catch (IllegalStateException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (IOException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
 
@@ -109,7 +116,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(AudioSavePathInDevice);
+                    mediaPlayer.setDataSource(audio_name);
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -127,23 +134,22 @@ public class RecordActivity extends AppCompatActivity {
                     buttonStart2.setText("stop rec2");
                     if (checkPermission()) {
 
-                        AudioSavePathInDevice =
-                                Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5) + "AudioRecording.3gp";
+                        audio_name2 = AudioSavePathInDevice + getCurrentTimeStamp() + "_AudioRecording.3gp";
 
                         if (mediaPlayer != null) {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady();
+                        MediaRecorderReady(audio_name2);
+                        int id2 = random.nextInt(1000000);
+                        db.addRecording(id2, audio_name2);
 
                         try {
                             mediaRecorder.prepare();
                             mediaRecorder.start();
                         } catch (IllegalStateException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (IOException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
 
@@ -169,7 +175,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(AudioSavePathInDevice);
+                    mediaPlayer.setDataSource(audio_name2);
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -182,15 +188,17 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
-    public void MediaRecorderReady(){
-        mediaRecorder=new MediaRecorder();
+    public void MediaRecorderReady(String audio_name){
+        mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+        mediaRecorder.setOutputFile(audio_name);
     }
 
+    /*
     public String CreateRandomAudioFileName(int string){
+
         StringBuilder stringBuilder = new StringBuilder( string );
         int i = 0 ;
         while(i < string ) {
@@ -199,6 +207,11 @@ public class RecordActivity extends AppCompatActivity {
             i++ ;
         }
         return stringBuilder.toString();
+    }
+    */
+
+    public String getCurrentTimeStamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
     }
 
     private void requestPermission() {
@@ -240,7 +253,20 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public String getResponse(int percentage) {
-        int p = (percentage / 25) % 4;
+        int p;
+        if (percentage < 10) {
+            p = 0;
+        } else if (percentage >= 10 && percentage < 30) {
+            p = 1;
+        } else if (percentage >= 30 && percentage < 50) {
+            p = 2;
+        } else if (percentage >= 50 && percentage < 70) {
+            p = 3;
+        } else if (percentage >= 70 && percentage < 90) {
+            p = 4;
+        } else {
+            p = 5;
+        }
         ArrayList<String> responses = db.getResponsesByPercentage(p);
         int numOfResponses = responses.size();
         int randNum = random.nextInt(numOfResponses);
