@@ -112,6 +112,7 @@ public class RecordActivity extends Activity {
                                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5)  + "AudioRecording.3gp";
 
                        // AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+                        audio_name = AudioSavePathInDevice;
 
                         //audio_name = AudioSavePathInDevice  + "_AudioRecording.3gp";
 
@@ -119,9 +120,9 @@ public class RecordActivity extends Activity {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady();
+                        MediaRecorderReady(audio_name);
                         int id1 = random.nextInt(1000000);
-                        db.addRecording(id1, AudioSavePathInDevice);
+                        db.addRecording(id1, audio_name);
 
                         try {
                             mediaRecorder.prepare();
@@ -155,8 +156,8 @@ public class RecordActivity extends Activity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(AudioSavePathInDevice);
-                    Log.d("ERROR", audio_name+" asjauerijkgioajgieu");
+                    mediaPlayer.setDataSource(audio_name);
+                    //Log.d("ERROR", audio_name+" asjauerijkgioajgieu");
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -179,14 +180,15 @@ public class RecordActivity extends Activity {
 
                         AudioSavePathInDevice =
                                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + CreateRandomAudioFileName(5)  + "AudioRecording.3gp";
+                        audio_name2 = AudioSavePathInDevice;
 
                         if (mediaPlayer != null) {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        MediaRecorderReady();
+                        MediaRecorderReady(audio_name2);
                         int id2 = random.nextInt(1000000);
-                        db.addRecording(id2, AudioSavePathInDevice);
+                        db.addRecording(id2, audio_name2);
 
                         try {
                             mediaRecorder.prepare();
@@ -220,7 +222,7 @@ public class RecordActivity extends Activity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(AudioSavePathInDevice);
+                    mediaPlayer.setDataSource(audio_name2);
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -233,12 +235,12 @@ public class RecordActivity extends Activity {
 
     }
 
-    public void MediaRecorderReady(){
+    public void MediaRecorderReady(String audio_name){
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+        mediaRecorder.setOutputFile(audio_name);
     }
 
     public String getCurrentTimeStamp() {
