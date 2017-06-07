@@ -13,7 +13,6 @@
 
         <activity
             android:name="com.example.team007.voicecomp.MainPage" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
